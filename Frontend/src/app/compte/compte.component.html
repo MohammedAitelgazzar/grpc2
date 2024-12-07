@@ -1,0 +1,98 @@
+<div class="container">
+  <div class="header">
+    <h1>Liste des Comptes Bancaires</h1>
+    <div class="search-bar">
+      <select 
+        class="search-input" 
+        [(ngModel)]="selectedType"
+        (change)="filterComptes()">
+        <option value="">Tous les types</option>
+        <option value="COURANT">Comptes Courants</option>
+        <option value="EPARGNE">Comptes Épargne</option>
+      </select>
+      <div class="search-stats">
+        Affichage de {{filteredComptes.length}} compte(s)
+      </div>
+    </div>
+    <div class="actions">
+      <button class="btn-add" (click)="showForm()">
+        <i class="fas fa-plus"></i> Nouveau Compte
+      </button>
+    </div>
+  </div>
+
+  <div class="table-container">
+    <table class="comptes-table">
+      <thead>
+        <tr>
+          <th>N° Compte</th>
+          <th>Type</th>
+          <th>Solde</th>
+          <th>Date de création</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let compte of filteredComptes" [ngClass]="compte.type.toLowerCase()">
+          <td>{{compte.id}}</td>
+          <td>
+            <span class="badge" [ngClass]="compte.type.toLowerCase()">
+              {{compte.type}}
+            </span>
+          </td>
+          <td class="solde">{{formatMontant(compte.solde)}}</td>
+          <td>{{compte.dateCreation | date:'dd/MM/yyyy'}}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="modal" *ngIf="isFormVisible">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>Nouveau Compte</h2>
+        <button class="close-btn" (click)="hideForm()">&times;</button>
+      </div>
+      <form (ngSubmit)="onSubmit()" #compteForm="ngForm">
+        <div class="form-group">
+          <label for="id">Numéro de compte</label>
+          <input 
+            type="text" 
+            id="id" 
+            name="id"
+            [(ngModel)]="newCompte.id" 
+            required
+            class="form-control">
+        </div>
+
+        <div class="form-group">
+          <label for="type">Type de compte</label>
+          <select 
+            id="type" 
+            name="type"
+            [(ngModel)]="newCompte.type" 
+            required
+            class="form-control">
+            <option value="COURANT">Compte Courant</option>
+            <option value="EPARGNE">Compte Épargne</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="solde">Solde initial</label>
+          <input 
+            type="number" 
+            id="solde" 
+            name="solde"
+            [(ngModel)]="newCompte.solde" 
+            required
+            class="form-control">
+        </div>
+
+        <div class="form-actions">
+          <button type="button" class="btn btn-secondary" (click)="hideForm()">Annuler</button>
+          <button type="submit" class="btn btn-primary" [disabled]="!compteForm.form.valid">Créer</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
