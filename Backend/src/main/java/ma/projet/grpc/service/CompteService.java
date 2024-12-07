@@ -24,4 +24,8 @@ public class CompteService {
     public Compte saveCompte(Compte compte) {
         return compteRepository.save(compte);
     }
+
+    public void deleteCompte(String id) {
+        compteRepository.deleteById(id);
+    }
 }

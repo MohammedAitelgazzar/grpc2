@@ -101,7 +101,7 @@ service CompteService {
 
   // Get accounts by type
   rpc CompteByType(GetCompteByTypeRequest) returns (GetCompteByTypeResponse);
-  
+
   // Delete account
   rpc DeleteCompte(DeleteCompteRequest) returns (DeleteCompteResponse);
 }
